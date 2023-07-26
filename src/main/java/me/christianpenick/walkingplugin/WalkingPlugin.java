@@ -3,11 +3,9 @@ package me.christianpenick.walkingplugin;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,7 +43,7 @@ public final class WalkingPlugin extends JavaPlugin implements Listener
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         Block blockUnderPlayer = player.getLocation().getBlock().getRelative(0, -1, 0);
 
-        if (itemInHand != null && itemInHand.getType() != Material.AIR && !blockUnderPlayer.isEmpty()) // player.getItemInHand() != null <-- might be necessary check
+        if (itemInHand.getType() != Material.AIR && !blockUnderPlayer.isEmpty()) // player.getItemInHand() != null <-- might be necessary check
         {
             Location playerLoc = player.getLocation();
             double pX = playerLoc.getX();
