@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class WalkingPlugin extends JavaPlugin implements Listener
@@ -32,29 +34,30 @@ public final class WalkingPlugin extends JavaPlugin implements Listener
     }
 
     @EventHandler
-    public void EntityHoldBlockEvent(PlayerInteractEvent event) {
+    public void onPlayerMove(PlayerMoveEvent event) {
         // Player object
         Player player = event.getPlayer();
 
         // radius of blocks around player
-        int radius = 2;
+        int radius = 1;
 
-        Material handItemType = player.getInventory().getItemInMainHand().getType();
-        Block blockUnderPlayer = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
+        // Material handItemType = player.getInventory().getItemInMainHand().getType();
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+        Block blockUnderPlayer = player.getLocation().getBlock().getRelative(0, -1, 0);
 
-        if (handItemType.isBlock() && !blockUnderPlayer.isEmpty()) // player.getItemInHand() != null <-- might be necessary check
+        if (itemInHand != null && itemInHand.getType() != Material.AIR && !blockUnderPlayer.isEmpty()) // player.getItemInHand() != null <-- might be necessary check
         {
             Location playerLoc = player.getLocation();
             double pX = playerLoc.getX();
-            double pY = playerLoc.getY();
+            double pY = playerLoc.getY()-1;
             double pZ = playerLoc.getZ();
 
             for (int x = -(radius); x <= radius; x ++)
             {
-                for (int y = -(radius); y <= radius; y ++)
+                for (int z = -(radius); z <= radius; z ++)
                 {
-                    Block b = player.getWorld().getBlockAt((int)pX+x, (int)pY+y, (int)pZ);
-                    b.setType(handItemType);
+                    Block b = player.getWorld().getBlockAt((int)pX+x, (int)pY, (int)pZ+z);
+                    b.setType(itemInHand.getType());
                 }
             }
         }
