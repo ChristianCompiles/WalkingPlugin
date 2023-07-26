@@ -1,0 +1,4 @@
+name: WalkingPlugin
+version: '${project.version}'
+main: me.christianpenick.walkingplugin.WalkingPlugin
+api-version: 1.20
